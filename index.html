@@ -2,48 +2,137 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Income | Expense Calculator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Magkano na lang natira? | Income vs Expense Calculator</title>
   <link rel="stylesheet" href="style.css">
-   <!-- Include lz-string library -->
-  <script src="https://cdn.jsdelivr.net/npm/lz-string@1.4.4/libs/lz-string.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+  <div class="container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-content">
+        <h1 class="app-title">Magkano na lang natira?</h1>
+        <button class="menu-btn" id="moreBtn">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </header>
 
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Incomes Section -->
+      <section class="section">
+        <h2 class="section-title">
+          <i class="fas fa-money-bill-wave"></i> Incomes
+        </h2>
+        <div id="income-container" class="inputs-container">
+          <!-- Income rows will be added here -->
+        </div>
+        <div class="button-row">
+          <button class="btn btn-primary" id="addIncomeBtn">
+            <i class="fas fa-plus"></i> Add Row
+          </button>
+          <button class="btn btn-warning" id="removeIncomeBtn">
+            <i class="fas fa-trash"></i> Remove
+          </button>
+        </div>
+      </section>
 
-  <h2>Income vs Expense Calculator</h2>
+      <!-- Expenses Section -->
+      <section class="section">
+        <h2 class="section-title">
+          <i class="fas fa-shopping-cart"></i> Expenses
+        </h2>
+        <div id="expense-container" class="inputs-container">
+          <!-- Expense rows will be added here -->
+        </div>
+        <div class="button-row">
+          <button class="btn btn-primary" id="addExpenseBtn">
+            <i class="fas fa-plus"></i> Add Row
+          </button>
+          <button class="btn btn-warning" id="removeExpenseBtn">
+            <i class="fas fa-trash"></i> Remove
+          </button>
+        </div>
+      </section>
 
-  <div class="section">
-    <h3>Incomes</h3>
-    <div id="income-container" class="inputs"></div>
-    <div class="buttons">
-      <button onclick="addField('income')">Add New Row</button>
-      <button onclick="removeField('income')">Remove</button>
+      <!-- Clear All Button -->
+      <div class="clear-container">
+        <button class="btn btn-clear" id="clearAllBtn">
+          <i class="fas fa-broom"></i> Clear All
+        </button>
+      </div>
+    </main>
+
+    <!-- Footer with Results -->
+    <footer class="app-footer" id="footer">
+      <div class="totals-container">
+        <p id="total-income" class="total-item">
+          <i class="fas fa-wallet"></i> Total Income: <span class="amount">₱0.00</span>
+        </p>
+        <p id="total-expense" class="total-item">
+          <i class="fas fa-receipt"></i> Total Expense: <span class="amount">₱0.00</span>
+        </p>
+        <p id="balance" class="balance-item">
+          <i class="fas fa-scale-balanced"></i> Balance: <span class="amount">₱0.00</span>
+          <span id="balance-emoji"></span>
+        </p>
+      </div>
+      <div id="message" class="message">
+        <!-- Dynamic message will appear here -->
+      </div>
+      
+      <!-- Share Section -->
+      <div class="share-section">
+        <button class="btn btn-share" id="shareBtn">
+          <i class="fas fa-share-alt"></i> Generate Shareable Link
+        </button>
+        <div id="share-link" class="share-link"></div>
+      </div>
+    </footer>
+
+    <!-- More Screen (Hidden by default) -->
+    <div id="moreScreen" class="more-screen">
+      <div class="more-content">
+        <button class="close-more-btn" id="closeMoreBtn">
+          <i class="fas fa-times"></i>
+        </button>
+        <h2><i class="fas fa-cog"></i> More Options</h2>
+        <div class="more-options">
+          <button class="more-option-btn" id="exportBtn">
+            <i class="fas fa-file-export"></i> Export Data
+          </button>
+          <button class="more-option-btn" id="importBtn">
+            <i class="fas fa-file-import"></i> Import Data
+          </button>
+          <button class="more-option-btn" id="darkModeBtn">
+            <i class="fas fa-moon"></i> Toggle Dark Mode
+          </button>
+          <button class="more-option-btn" id="helpBtn">
+            <i class="fas fa-question-circle"></i> Help & Tips
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="section">
-    <h3>Expenses</h3>
-    <div id="expense-container" class="inputs"></div>
-    <div class="buttons">
-      <button onclick="addField('expense')">Add New Row</button>
-      <button onclick="removeField('expense')">Remove</button>
+  <!-- Help Modal -->
+  <div id="helpModal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal">&times;</span>
+      <h3><i class="fas fa-lightbulb"></i> Tips & Tricks</h3>
+      <ul class="tips-list">
+        <li>• You can enter expressions like <code>145 * 8 * 20</code> in amount fields</li>
+        <li>• Tap "Remove" to show delete buttons for each row</li>
+        <li>• Data is automatically saved to your browser</li>
+        <li>• Use "Generate Shareable Link" to share your calculations</li>
+        <li>• Balance turns red when negative, green when positive</li>
+      </ul>
     </div>
   </div>
 
-  <button onclick="calculateBalance()">Calculate Balance</button>
-  <button onclick="generateLink()">Generate Shareable Link</button>
-
-<h3>Total Income & Expense</h3>
-<div id="totals" style="font-weight: bold;">
-  <p id="total-income">Total Income: ₱0.00</p>
-  <p id="total-expense">Total Expense: ₱0.00</p>
-</div>
-
-
-  <div id="result"></div>
-  <div id="share-link" style="margin-top: 10px; text-align:center; word-break: break-word;"></div>
-
-  <script src="script.js" > </script>
-
+  <script src="script.js"></script>
 </body>
 </html>
