@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Income | Expense Calculator</title>
+  <link rel="stylesheet" href="style.css">
+   <!-- Include lz-string library -->
+  <script src="https://cdn.jsdelivr.net/npm/lz-string@1.4.4/libs/lz-string.min.js"></script>
+</head>
+<body>
+
+
+  <h2>Income vs Expense Calculator</h2>
+
+  <div class="section">
+    <h3>Incomes</h3>
+    <div id="income-container" class="inputs"></div>
+    <div class="buttons">
+      <button onclick="addField('income')">Add New Row</button>
+      <button onclick="removeField('income')">Remove</button>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Expenses</h3>
+    <div id="expense-container" class="inputs"></div>
+    <div class="buttons">
+      <button onclick="addField('expense')">Add New Row</button>
+      <button onclick="removeField('expense')">Remove</button>
+    </div>
+  </div>
+
+  <button onclick="calculateBalance()">Calculate Balance</button>
+  <button onclick="generateLink()">Generate Shareable Link</button>
+
+<h3>Total Income & Expense</h3>
+<div id="totals" style="font-weight: bold;">
+  <p id="total-income">Total Income: ₱0.00</p>
+  <p id="total-expense">Total Expense: ₱0.00</p>
+</div>
+
+
+  <div id="result"></div>
+  <div id="share-link" style="margin-top: 10px; text-align:center; word-break: break-word;"></div>
+
+  <script src="script.js" > </script>
+
+</body>
+</html>
