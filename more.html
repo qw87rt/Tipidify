@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5">
+  <title>Tipidify · More</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .more-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      min-height: 100vh;
+      background: #F5F7FA;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 30px;
+    }
+    h1 {
+      font-size: 1.8rem;
+      color: #2E3A59;
+    }
+    .back-link {
+      font-size: 1.2rem;
+      color: #00C2CB;
+      text-decoration: none;
+    }
+    .menu-card {
+      background: white;
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .menu-item {
+      background: #00C2CB;
+      color: white;
+      padding: 16px;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .menu-item:hover { opacity: 0.9; }
+    .content-card {
+      background: white;
+      border-radius: 20px;
+      padding: 24px;
+      margin-top: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .back-btn {
+      background: none;
+      border: none;
+      color: #2E3A59;
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+      cursor: pointer;
+      padding: 8px 0;
+    }
+    .section-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #2E3A59;
+      border-left: 4px solid #00C2CB;
+      padding-left: 12px;
+      margin-bottom: 20px;
+    }
+    .about-text, .feedback-text {
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #2B2D42;
+      background: #f9f9f9;
+      padding: 16px;
+      border-radius: 12px;
+    }
+    .email-highlight {
+      font-weight: bold;
+      color: #00C2CB;
+      user-select: all;
+    }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <div class="more-container">
+    <header>
+      <h1>More</h1>
+      <a href="home.html" class="back-link">← Back</a>
+    </header>
+
+    <!-- Menu View (default) -->
+    <div id="menuView" class="menu-card">
+      <div class="menu-item" onclick="showView('about')">About</div>
+      <div class="menu-item" onclick="showView('feedback')">Feedback</div>
+      <div class="menu-item" onclick="window.location.href='streaks.html';">Consistency Overview</div>
+    </div>
+
+    <!-- About View (hidden initially) -->
+    <div id="aboutView" class="content-card hidden">
+      <!--<button class="back-btn" onclick="showView('menu')">← Back to Options</button>-->
+      <div class="section-title">About</div>
+      <div class="about-text">
+        <strong>Tipidify</strong> is a simple app that helps you track where your sweldo/allowance goes. 
+        I originally built it for myself as I was getting annoyed at how much time I wasted manually 
+        calculating things with a regular calculator. I tried other income and expense trackers, 
+        but most felt too complex for a simple task or didn’t fit what I actually needed.
+        <br><br>
+        So I made Tipidify: something straightforward, no ads, no fluff.. just a clean way to track 
+        your hard-earned money.
+        <br><br>
+        Now I’m sharing it with others who want the same thing: a light, easy way to see where 
+        your money goes, and make better choices.. <strong>one peso at a time.</strong>
+      </div>
+    </div>
+
+    <!-- Feedback View (hidden initially) -->
+    <div id="feedbackView" class="content-card hidden">
+     <!-- <button class="back-btn" onclick="showView('menu')">← Back to Options</button> -->
+      <div class="section-title">Feedback</div>
+      <div class="feedback-text">
+        Got ideas or spotted something that could be better? I'd love to hear from you. 
+        Send your thoughts, suggestions, or feedback to 
+        <span class="email-highlight">tipidify.info@gmail.com</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function showView(viewName) {
+      const menu = document.getElementById('menuView');
+      const about = document.getElementById('aboutView');
+      const feedback = document.getElementById('feedbackView');
+
+      // Hide all
+      menu.classList.add('hidden');
+      about.classList.add('hidden');
+      feedback.classList.add('hidden');
+
+      // Show selected
+      if (viewName === 'menu') {
+        menu.classList.remove('hidden');
+      } else if (viewName === 'about') {
+        about.classList.remove('hidden');
+      } else if (viewName === 'feedback') {
+        feedback.classList.remove('hidden');
+      }
+    }
+
+    // Initial state: show menu
+    showView('menu');
+  </script>
+</body>
+</html>

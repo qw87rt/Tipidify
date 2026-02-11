@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5">
+  <title>Tipidify · Streak</title>
+  <style>
+    /* ----- GLOBAL STYLES (from styles.css) ----- */
+    :root {
+      --bg: #F5F7FA;
+      --teal: #00C2CB;
+      --dark: #2E3A59;
+      --text: #2B2D42;
+      --gray: #666;
+      --light-gray: #ccc;
+      --white: #fff;
+      --green: #34C759;
+      --lime: #C8FA5F;
+      --orange: #FF9500;
+      --red: #E43F5A;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 0.5rem;
+    }
+
+    .section-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--dark);
+      margin: 20px 0 10px;
+      border-left: 4px solid var(--teal);
+      padding-left: 12px;
+    }
+
+    .card {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .btn {
+      background-color: var(--teal);
+      color: white;
+      font-weight: bold;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .btn:hover { opacity: 0.9; }
+    .btn.orange { background-color: var(--orange); }
+    .btn.red { background-color: var(--red); }
+    .btn.dark { background-color: var(--dark); }
+    .btn.outline {
+      background: white;
+      border: 1px solid var(--dark);
+      color: var(--dark);
+    }
+
+    .row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 12px;
+      align-items: center;
+    }
+    .input-label {
+      flex: 0.7;
+      padding: 10px;
+      border: 1px solid var(--light-gray);
+      border-radius: 10px;
+      font-size: 1rem;
+      background: white;
+    }
+    .input-amount {
+      flex: 1.3;
+      padding: 10px;
+      border: 1px solid var(--light-gray);
+      border-radius: 10px;
+      font-size: 1rem;
+      background: white;
+    }
+    .remove-btn {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--red);
+    }
+
+    .footer {
+      background: var(--dark);
+      color: white;
+      padding: 20px;
+      border-radius: 12px;
+      margin-top: auto;
+      text-align: center;
+    }
+    .footer p { margin: 4px 0; }
+    .footer .balance {
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+    .footer .quote {
+      font-style: italic;
+      color: var(--lime);
+    }
+
+    @media (max-width: 600px) {
+      .container { padding: 12px; }
+      .row { flex-wrap: wrap; }
+      .input-label, .input-amount { flex: 1 1 100%; }
+    }
+
+    /* ----- PAGE‑SPECIFIC STYLES (from your inline <style>) ----- */
+    .streak-number {
+      font-size: 4rem;
+      font-weight: bold;
+      color: var(--orange);
+    }
+    .quote-icon {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+    .center-content {
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+    .footer-message {
+      margin-top: 40px;
+      color: #999;
+    }
+  </style>
+</head>
+<body>
+  <div class="container center-content">
+    <div id="content">
+      <!-- Dynamic content will be injected -->
+    </div>
+    <p id="footer-message" class="footer-message"></p>
+  </div>
+
+  <script>
+    const quotes = [
+      "Believe you can and you're halfway there.",
+      "The best time to start was yesterday. The next best time is now.",
+      "Don't watch the clock; do what it does. Keep going.",
+      "Success is the sum of small efforts repeated daily.",
+      "Dream big. Start small. Act now.",
+      "It always seems impossible until it's done.",
+      "Your only limit is your mind.",
+      "Great things never come from comfort zones.",
+      "Hard work beats talent when talent doesn't work hard.",
+      "Stay hungry. Stay foolish.",
+      "Discipline is the bridge between goals and accomplishment.",
+      "We are what we repeatedly do.",
+      "Motivation gets you started. Habit keeps you going.",
+      "Success doesn't come from what you do occasionally.",
+      "Consistency is the key.",
+      "Every journey begins with a single step.",
+      "Little by little, a little becomes a lot.",
+      "Fall seven times, stand up eight.",
+      "What you do today matters.",
+      "Keep moving forward."
+    ];
+
+    function getTodayString() {
+      return new Date().toISOString().split('T')[0];
+    }
+
+    function updateStreakAndNavigate() {
+      const today = getTodayString();
+      const lastLogin = localStorage.getItem('lastLoginDate');
+      const isFirstLoginToday = lastLogin !== today;
+
+      let currentRun = parseInt(localStorage.getItem('currentRun') || '0');
+      let longestRun = parseInt(localStorage.getItem('longestRun') || '0');
+      let loggedDays = JSON.parse(localStorage.getItem('loggedDays') || '[]');
+
+      if (isFirstLoginToday) {
+        if (lastLogin) {
+          const yesterday = new Date();
+          yesterday.setDate(yesterday.getDate() - 1);
+          const yesterdayStr = yesterday.toISOString().split('T')[0];
+          if (lastLogin === yesterdayStr) {
+            currentRun += 1;
+          } else {
+            currentRun = 1;
+          }
+        } else {
+          currentRun = 1;
+        }
+
+        localStorage.setItem('lastLoginDate', today);
+        if (!loggedDays.includes(today)) {
+          loggedDays.push(today);
+          localStorage.setItem('loggedDays', JSON.stringify(loggedDays));
+        }
+        if (currentRun > longestRun) {
+          longestRun = currentRun;
+          localStorage.setItem('longestRun', longestRun);
+        }
+        localStorage.setItem('currentRun', currentRun);
+      }
+
+      const hasOnboarded = localStorage.getItem('hasOnboarded') === 'true';
+      const contentDiv = document.getElementById('content');
+      const footerMsg = document.getElementById('footer-message');
+
+      if (!hasOnboarded) {
+        contentDiv.innerHTML = `<p style="font-size:1.2rem;">Getting things ready for you...</p>`;
+        footerMsg.textContent = 'Redirecting, please wait...';
+        setTimeout(() => { window.location.href = 'onboarding.html'; }, 1800);
+        return;
+      }
+
+      if (!isFirstLoginToday) {
+        contentDiv.innerHTML = `<p style="font-size:1.2rem;">Getting things ready for you...</p>`;
+      } else {
+        const streakMessage = 
+          currentRun === 1 ? 'Nice start!' :
+          currentRun < 5 ? 'Doing great!' :
+          currentRun < 10 ? 'Solid streak!' : 'Legendary run!';
+
+        const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+        const icons = ['⭐', '🔥', '💪', '🌱'];
+        const icon = icons[Math.floor(Math.random() * icons.length)];
+
+        contentDiv.innerHTML = `
+          <div style="margin-bottom:30px;">
+            <div class="streak-number">${currentRun}</div>
+            <div style="font-size:1.5rem; font-weight:600; color:var(--dark);">Day Streak!</div>
+            <div style="font-size:1rem; color:var(--gray); margin-top:8px;">${streakMessage}</div>
+          </div>
+          <div>
+            <div class="quote-icon">${icon}</div>
+            <div style="font-size:1.2rem; font-style:italic; color:#4A4A4A;">"${randomQuote}"</div>
+          </div>
+        `;
+      }
+
+      footerMsg.textContent = 'Redirecting, please wait...';
+      setTimeout(() => { window.location.href = 'home.html'; }, 2000);
+    }
+
+    updateStreakAndNavigate();
+  </script>
+</body>
+</html>

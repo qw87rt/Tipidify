@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5">
+  <title>Tipidify · Consistency</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Additional styles for streaks page */
+    .streak-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .streak-stats {
+      display: flex;
+      background: white;
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .stat-item {
+      flex: 1;
+      text-align: center;
+    }
+    .stat-number {
+      font-size: 36px;
+      font-weight: bold;
+      color: #2E3A59;
+      margin-top: 8px;
+    }
+    .stat-label {
+      font-size: 14px;
+      color: #666;
+    }
+    .divider {
+      width: 1px;
+      background: #E0E0E0;
+      margin: 0 10px;
+    }
+    .progress-card {
+      background: white;
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .progress-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .progress-icon {
+      font-size: 28px;
+      margin-right: 12px;
+    }
+    .progress-title {
+      flex: 1;
+    }
+    .progress-title h3 {
+      font-size: 20px;
+      font-weight: bold;
+      color: #2E3A59;
+      margin: 0;
+    }
+    .badge-level {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 4px;
+      color: white;
+      font-size: 12px;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+    .completion-badge {
+      text-align: right;
+    }
+    .completion-count {
+      font-size: 24px;
+      font-weight: bold;
+      color: #00C2CB;
+    }
+    .completion-label {
+      font-size: 12px;
+      color: #666;
+    }
+    .progress-stats {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    .progress-label {
+      font-weight: 600;
+      color: #2E3A59;
+    }
+    .progress-percent {
+      color: #00C2CB;
+      font-weight: 600;
+    }
+    .progress-bar-bg {
+      height: 12px;
+      background: #F0F0F0;
+      border-radius: 6px;
+      position: relative;
+      margin: 8px 0;
+    }
+    .progress-fill {
+      height: 100%;
+      background: #00C2CB;
+      border-radius: 6px;
+      width: 0%;
+    }
+    .badge-marker {
+      position: absolute;
+      top: -2px;
+      width: 3px;
+      height: 16px;
+      background: #FF9500;
+      border-radius: 1.5px;
+    }
+    .badge-achieved {
+      position: absolute;
+      top: -20px;
+      background: white;
+      border-radius: 12px;
+      padding: 2px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .progress-message {
+      font-size: 14px;
+      color: #666;
+      font-style: italic;
+      margin-top: 8px;
+    }
+    .calendar-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      margin-top: 15px;
+    }
+    .calendar-day {
+      width: calc(100% / 7 - 6px);
+      text-align: center;
+      margin-bottom: 12px;
+    }
+    .day-of-week {
+      font-size: 12px;
+      color: #999;
+      margin-bottom: 4px;
+    }
+    .day-circle {
+      width: 36px;
+      height: 36px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      background: #F5F7FA;
+      font-weight: 600;
+      color: #666;
+      position: relative;
+    }
+    .today {
+      background: #00C2CB;
+      color: white;
+    }
+    .logged {
+      background: #34C759;
+      color: white;
+    }
+    .check-indicator {
+      position: absolute;
+      bottom: -2px;
+      right: -2px;
+      width: 12px;
+      height: 12px;
+      background: white;
+      border: 1px solid #34C759;
+      border-radius: 6px;
+    }
+    .legend {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      margin: 0 12px;
+    }
+    .legend-color {
+      width: 12px;
+      height: 12px;
+      border-radius: 6px;
+      margin-right: 6px;
+    }
+    .badge-card {
+      display: flex;
+      align-items: center;
+      background: white;
+      border: 2px solid #E0E0E0;
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    .badge-icon {
+      width: 70px;
+      height: 70px;
+      border-radius: 35px;
+      background: #F5F7FA;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      margin-right: 16px;
+      position: relative;
+    }
+    .badge-count {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background: #00C2CB;
+      color: white;
+      width: 24px;
+      height: 24px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: bold;
+      border: 2px solid white;
+    }
+    .badge-info h4 {
+      margin: 0 0 4px 0;
+      font-size: 16px;
+    }
+    .badge-info p {
+      margin: 2px 0;
+      font-size: 13px;
+      color: #666;
+    }
+    .refresh-btn {
+      background: #F0F0F0;
+      border: none;
+      padding: 12px;
+      border-radius: 10px;
+      width: 100%;
+      font-size: 14px;
+      color: #666;
+      font-weight: 500;
+      cursor: pointer;
+      margin: 20px 0;
+    }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <div class="container" style="max-width:800px; padding-bottom:40px;">
+    <!-- Header -->
+    <div class="streak-header">
+      <h1>Consistency Overview</h1>
+      <button id="refreshBtn" style="background:none; border:none; font-size:24px; cursor:pointer;">🔄</button>
+    </div>
+    <p style="color:#666; font-style:italic; margin-bottom:20px;">It's about showing up, not being perfect.</p>
+
+    <!-- Current & Longest Streak -->
+    <div class="streak-stats">
+      <div class="stat-item">
+        <span style="font-size:32px;">🔥</span>
+        <div class="stat-number" id="currentStreak">0</div>
+        <div class="stat-label">Current Streak</div>
+      </div>
+      <div class="divider"></div>
+      <div class="stat-item">
+        <span style="font-size:32px;">📈</span>
+        <div class="stat-number" id="longestStreak">0</div>
+        <div class="stat-label">Longest Streak</div>
+      </div>
+    </div>
+
+    <!-- Weekly Progress -->
+    <div id="weeklyCard" class="progress-card"></div>
+    <!-- Monthly Progress -->
+    <div id="monthlyCard" class="progress-card"></div>
+    <!-- Yearly Progress -->
+    <div id="yearlyCard" class="progress-card"></div>
+
+    <!-- 30-Day Calendar -->
+    <div class="progress-card">
+      <h3 style="margin-bottom:16px;">30-Day Calendar</h3>
+      <div id="calendarGrid" class="calendar-grid"></div>
+      <div class="legend">
+        <div class="legend-item"><span class="legend-color" style="background:#34C759;"></span> Tracked day</div>
+        <div class="legend-item"><span class="legend-color" style="background:#00C2CB;"></span> Today</div>
+      </div>
+    </div>
+
+    <!-- Badges Section -->
+    <div class="progress-card">
+      <h3 style="margin-bottom:8px;">Your Badges</h3>
+      <p style="color:#666; margin-bottom:20px;">Earn and level up badges by maintaining consistency</p>
+      <div id="badgesList"></div>
+    </div>
+
+    <!-- Tips -->
+    <div class="progress-card">
+      <h3 style="margin-bottom:16px;">💡 Tips for Success:</h3>
+      <div style="display:flex; margin-bottom:12px;"><span style="margin-right:10px;">📅</span> <strong>Week starts Monday:</strong> Aim for 5+ days each week (out of 7)</div>
+      <div style="display:flex; margin-bottom:12px;"><span style="margin-right:10px;">🎯</span> <strong>Monthly consistency:</strong> Track 21+ days in a month (out of 30)</div>
+      <div style="display:flex; margin-bottom:12px;"><span style="margin-right:10px;">🏆</span> <strong>Badges are automatic:</strong> Earn badges at 5/7, 21/30, 333/365 days</div>
+      <div style="display:flex;"><span style="margin-right:10px;">✨</span> <strong>Gold markers:</strong> Orange line shows badge goal, trophy appears when achieved</div>
+    </div>
+
+    <!-- Refresh button (duplicate, but we already have header icon) -->
+    <button class="refresh-btn" id="refreshBtn2">🔄 Refresh Data</button>
+  </div>
+
+  <script>
+    // ---------- BADGE DEFINITIONS (same as React Native) ----------
+    const badgeDefinitions = [
+      {
+        type: 'weekly',
+        title: 'Weekly Tracker',
+        description: 'Track 5+ days in a week (out of 7)',
+        icon: '📅',
+        levels: [
+          { threshold: 1, name: 'Beginner', color: '#FF9500', icon: '⭐' },
+          { threshold: 5, name: 'Regular', color: '#34C759', icon: '📈' },
+          { threshold: 25, name: 'Expert', color: '#00C2CB', icon: '✨' },
+          { threshold: 50, name: 'Master', color: '#5856D6', icon: '🌟' },
+          { threshold: 100, name: 'Legend', color: '#FF2D55', icon: '🏆' },
+        ]
+      },
+      {
+        type: 'monthly',
+        title: 'Monthly Tracker',
+        description: 'Track 21+ days in a month (out of 30)',
+        icon: '📆',
+        levels: [
+          { threshold: 1, name: 'Beginner', color: '#FF9500', icon: '📅' },
+          { threshold: 3, name: 'Consistent', color: '#34C759', icon: '🔄' },
+          { threshold: 6, name: 'Dedicated', color: '#00C2CB', icon: '📈' },
+          { threshold: 12, name: 'Year-Round', color: '#5856D6', icon: '✨' },
+          { threshold: 24, name: 'Unstoppable', color: '#FF2D55', icon: '✅' },
+        ]
+      },
+      {
+        type: 'yearly',
+        title: 'Yearly Milestone',
+        description: 'Track 333+ days in a year (out of 365)',
+        icon: '🏅',
+        levels: [
+          { threshold: 1, name: 'First Year', color: '#FF9500', icon: '🎖️' },
+          { threshold: 2, name: 'Back-to-Back', color: '#34C759', icon: '🔄' },
+          { threshold: 3, name: 'Triple Crown', color: '#00C2CB', icon: '👑' },
+          { threshold: 5, name: 'Half-Decade', color: '#5856D6', icon: '💎' },
+          { threshold: 10, name: 'Decade Master', color: '#FF2D55', icon: '🎉' },
+        ]
+      },
+    ];
+
+    // ---------- HELPER FUNCTIONS ----------
+    function getTodayString() {
+      return new Date().toISOString().split('T')[0];
+    }
+
+    function dateToString(date) {
+      return date.toISOString().split('T')[0];
+    }
+
+    // Get Monday of current week (ISO week, Monday first)
+    function getMonday(date) {
+      const d = new Date(date);
+      const day = d.getDay(); // 0 Sun, 1 Mon, ...
+      const diff = day === 0 ? 6 : day - 1; // days to subtract to get Monday
+      d.setDate(d.getDate() - diff);
+      d.setHours(0,0,0,0);
+      return d;
+    }
+
+    // Count logged days in a date range
+    function countLoggedDaysInRange(loggedDays, startDate, endDate) {
+      const start = new Date(startDate).setHours(0,0,0,0);
+      const end = new Date(endDate).setHours(23,59,59,999);
+      return loggedDays.filter(d => {
+        const ts = new Date(d).getTime();
+        return ts >= start && ts <= end;
+      }).length;
+    }
+
+    // ---------- LOAD & RENDER ----------
+    function loadAndRender() {
+      // Load from localStorage
+      let currentRun = parseInt(localStorage.getItem('currentRun') || '0');
+      let longestRun = parseInt(localStorage.getItem('longestRun') || '0');
+      let loggedDays = JSON.parse(localStorage.getItem('loggedDays') || '[]');
+      let badges = JSON.parse(localStorage.getItem('badges') || '[]');
+      let weeklyStats = JSON.parse(localStorage.getItem('weeklyStats') || '[]');
+      let monthlyStats = JSON.parse(localStorage.getItem('monthlyStats') || '[]');
+      let yearlyStats = JSON.parse(localStorage.getItem('yearlyStats') || '[]');
+
+      const today = new Date();
+      const todayStr = getTodayString();
+
+      // Update streak if needed (mirror logic from index)
+      const lastLogin = localStorage.getItem('lastLoginDate');
+      if (lastLogin !== todayStr) {
+        // This is a new day; we should recalc streak (but we don't write back here to keep consistency)
+        // For display, compute based on loggedDays
+        const sorted = [...loggedDays].sort();
+        let streak = 1;
+        if (sorted.length > 0) {
+          let last = new Date(sorted[sorted.length-1]);
+          let yesterday = new Date();
+          yesterday.setDate(yesterday.getDate() - 1);
+          if (dateToString(last) === dateToString(yesterday)) {
+            // need to compute consecutive days
+            // Simplified: just use stored currentRun, but if last login was yesterday, increment
+            if (lastLogin === dateToString(yesterday)) {
+              streak = currentRun + 1;
+            } else {
+              streak = 1;
+            }
+          } else {
+            streak = 1;
+          }
+        }
+        // We'll just display stored values, but you might want to recalc properly.
+      }
+
+      // Compute current week / month / year days
+      const monday = getMonday(today);
+      const weekDays = countLoggedDaysInRange(loggedDays, monday, today);
+      
+      const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+      const monthDays = countLoggedDaysInRange(loggedDays, startOfMonth, today);
+      
+      const startOfYear = new Date(today.getFullYear(), 0, 1);
+      const yearDays = countLoggedDaysInRange(loggedDays, startOfYear, today);
+
+      // Update DOM with streak numbers
+      document.getElementById('currentStreak').innerText = currentRun;
+      document.getElementById('longestStreak').innerText = longestRun;
+
+      // Render progress cards
+      renderProgressCard('weekly', weekDays, 5, 7, weeklyStats.length, badges);
+      renderProgressCard('monthly', monthDays, 21, 30, monthlyStats.length, badges);
+      renderProgressCard('yearly', yearDays, 333, 365, yearlyStats.length, badges);
+
+      // Render calendar
+      renderCalendar(loggedDays);
+
+      // Render badges
+      renderBadges(badges);
+    }
+
+    function renderProgressCard(type, current, goal, total, completedCount, badges) {
+      const card = document.getElementById(`${type}Card`);
+      if (!card) return;
+
+      const badge = badges.find(b => b.type === type);
+      const badgeColor = badge ? badge.color : '#666';
+      const badgeName = badge ? badge.name : 'Not earned';
+      const percentage = (current / total) * 100;
+      const goalPercentage = (goal / total) * 100;
+      const isGoalReached = current >= goal;
+
+      // Determine message
+      let message = '';
+      if (type === 'weekly') {
+        if (current === 0) message = 'Start your week strong!';
+        else if (current >= goal) message = '🎉 Weekly badge goal achieved!';
+        else {
+          const need = goal - current;
+          message = need === 1 ? 'Just 1 more day for badge!' : `${need} more days to reach badge goal`;
+        }
+      } else if (type === 'monthly') {
+        if (current === 0) message = 'Start building your monthly habit!';
+        else if (current >= goal) message = '🎉 Monthly badge goal achieved!';
+        else {
+          const need = goal - current;
+          message = need <= 3 ? `Only ${need} days left for badge!` : `${need} more days to reach badge goal`;
+        }
+      } else {
+        if (current === 0) message = 'Start your journey to legendary status!';
+        else if (current >= goal) message = '🎉 Yearly badge goal achieved!';
+        else {
+          const percent = Math.round((current / goal) * 100);
+          message = `${percent}% of badge goal (${goal - current} days to go)`;
+        }
+      }
+
+      // Build HTML
+      let html = `
+        <div class="progress-header">
+          <span class="progress-icon">${type === 'weekly' ? '📅' : type === 'monthly' ? '📆' : '🏅'}</span>
+          <div class="progress-title">
+            <h3>${type === 'weekly' ? 'Weekly Streak' : type === 'monthly' ? 'Monthly Streak' : 'Yearly Milestone'}</h3>
+            ${badge ? `<span class="badge-level" style="background:${badgeColor};">${badgeName}</span>` : ''}
+          </div>
+          <div class="completion-badge">
+            <div class="completion-count">${completedCount}</div>
+            <div class="completion-label">${type === 'weekly' ? 'weeks' : type === 'monthly' ? 'months' : 'years'}</div>
+          </div>
+        </div>
+        <div class="progress-stats">
+          <span class="progress-label">${current}/${total} days</span>
+          <span class="progress-percent">${Math.round(percentage)}%</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-fill" style="width: ${percentage}%; background: ${badgeColor};"></div>
+          <div class="badge-marker" style="left: ${goalPercentage}%;"></div>
+          ${isGoalReached ? `<div class="badge-achieved" style="left: ${goalPercentage}%;">🏆</div>` : ''}
+        </div>
+        <div class="progress-message">${message}</div>
+      `;
+      card.innerHTML = html;
+    }
+
+    function renderCalendar(loggedDays) {
+      const grid = document.getElementById('calendarGrid');
+      const today = new Date();
+      const days = [];
+      for (let i = 29; i >= 0; i--) {
+        const d = new Date(today);
+        d.setDate(today.getDate() - i);
+        days.push(d);
+      }
+
+      let html = '';
+      days.forEach(day => {
+        const dayStr = dateToString(day);
+        const isToday = dayStr === getTodayString();
+        const isLogged = loggedDays.includes(dayStr);
+        const dayOfWeek = day.toLocaleDateString('en-US', { weekday: 'short' }).charAt(0);
+        html += `
+          <div class="calendar-day">
+            <div class="day-of-week">${dayOfWeek}</div>
+            <div class="day-circle ${isToday ? 'today' : ''} ${isLogged ? 'logged' : ''}">
+              ${day.getDate()}
+              ${isLogged && !isToday ? '<div class="check-indicator"></div>' : ''}
+            </div>
+          </div>
+        `;
+      });
+      grid.innerHTML = html;
+    }
+
+    function renderBadges(badges) {
+      const container = document.getElementById('badgesList');
+      let html = '';
+      badgeDefinitions.forEach(def => {
+        const userBadge = badges.find(b => b.type === def.type);
+        if (userBadge) {
+          // Unlocked badge
+          const level = def.levels.find(l => l.threshold === userBadge.level) || def.levels[0];
+          const nextLevel = def.levels.find(l => l.threshold > userBadge.level);
+          html += `
+            <div class="badge-card" style="border-color: ${level.color};">
+              <div class="badge-icon" style="background: ${level.color}20;">
+                <span>${level.icon}</span>
+                <span class="badge-count" style="background: ${level.color};">${userBadge.count}</span>
+              </div>
+              <div class="badge-info">
+                <h4 style="color:${level.color};">${def.title} • ${userBadge.name}</h4>
+                <p>${def.description}</p>
+                <p style="color:#00C2CB; font-weight:600;">Completed ${userBadge.count} time${userBadge.count!==1?'s':''}</p>
+                <p style="color:#999; font-size:12px;">Last earned: ${new Date(userBadge.lastAwarded).toLocaleDateString()}</p>
+                ${nextLevel ? `<p style="color:#007AFF; font-size:12px; margin-top:6px;">Next: ${nextLevel.name} (${nextLevel.threshold} total)</p>` : ''}
+              </div>
+            </div>
+          `;
+        } else {
+          // Locked badge
+          html += `
+            <div class="badge-card" style="opacity:0.8; border-color:#E0E0E0;">
+              <div class="badge-icon" style="background:#F5F7FA;">
+                <span>🔒</span>
+              </div>
+              <div class="badge-info">
+                <h4 style="color:#999;">${def.title}</h4>
+                <p>${def.description}</p>
+                <p style="color:#999; font-style:italic;">Not yet earned</p>
+              </div>
+            </div>
+          `;
+        }
+      });
+      container.innerHTML = html || '<p style="color:#666;">No badges yet. Keep tracking!</p>';
+    }
+
+    // Refresh button handlers
+    function refresh() {
+      loadAndRender();
+    }
+
+    // Initialize on load
+    window.onload = function() {
+      loadAndRender();
+      document.getElementById('refreshBtn').addEventListener('click', refresh);
+      document.getElementById('refreshBtn2').addEventListener('click', refresh);
+    };
+  </script>
+</body>
+</html>

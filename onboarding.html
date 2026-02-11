@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5">
+  <title>Tipidify · Onboarding</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Onboarding specific */
+    .onboarding-container {
+      max-width: 800px;
+      margin: 0 auto;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: #F5F7FA;
+      padding: 20px;
+    }
+    .header {
+      display: flex;
+      justify-content: flex-end;
+      padding: 10px 0;
+    }
+    .skip-btn {
+      background: rgba(46,58,89,0.1);
+      border: none;
+      padding: 8px 20px;
+      border-radius: 20px;
+      color: #2E3A59;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    .slide-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+    .slide {
+      display: none;
+      width: 100%;
+      animation: fade 0.3s;
+    }
+    .slide.active {
+      display: block;
+    }
+    @keyframes fade {
+      from { opacity: 0.4; } to { opacity: 1; }
+    }
+    .icon-circle {
+      width: 120px;
+      height: 120px;
+      border-radius: 60px;
+      background: rgba(0,194,203,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 30px;
+      border: 3px solid white;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .icon-circle span {
+      font-size: 60px;
+    }
+    .slide-title {
+      font-size: 28px;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+    .slide-desc {
+      font-size: 18px;
+      color: #666;
+      line-height: 1.5;
+      margin-bottom: 30px;
+    }
+    .example-box {
+      background: white;
+      padding: 16px;
+      border-radius: 16px;
+      text-align: left;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+    .example-row {
+      display: flex;
+      gap: 10px;
+      margin: 10px 0;
+    }
+    .feature-list {
+      text-align: left;
+      max-width: 300px;
+      margin: 0 auto;
+    }
+    .feature-item {
+      display: flex;
+      align-items: center;
+      background: rgba(255,255,255,0.9);
+      padding: 12px 16px;
+      border-radius: 12px;
+      margin-bottom: 10px;
+    }
+    .feature-item span:first-child {
+      margin-right: 12px;
+      font-size: 20px;
+    }
+    .pagination {
+      display: flex;
+      justify-content: center;
+      margin: 20px 0;
+    }
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 4px;
+      background: #00C2CB;
+      margin: 0 6px;
+      opacity: 0.3;
+      transition: all 0.2s;
+    }
+    .dot.active {
+      width: 24px;
+      opacity: 1;
+    }
+    .btn-next {
+      background: #00C2CB;
+      color: white;
+      font-weight: bold;
+      padding: 16px 40px;
+      border: none;
+      border-radius: 14px;
+      font-size: 18px;
+      cursor: pointer;
+      margin: 20px 0;
+      box-shadow: 0 4px 12px rgba(0,194,203,0.3);
+    }
+    @media (max-width: 600px) {
+      .icon-circle { width: 100px; height: 100px; }
+      .icon-circle span { font-size: 50px; }
+      .slide-title { font-size: 24px; }
+      .slide-desc { font-size: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="onboarding-container">
+    <!-- Header with Skip -->
+    <div class="header">
+      <button class="skip-btn" id="skipBtn">Skip</button>
+    </div>
+
+    <!-- Slides -->
+    <div class="slide-area">
+      <!-- Slide 1 -->
+      <div class="slide active" id="slide1">
+        <div class="icon-circle" style="background: rgba(0,194,203,0.1);">
+          <span>💰</span>
+        </div>
+        <div class="slide-title" style="color: #00C2CB;">Track Your Income</div>
+        <div class="slide-desc">
+          Easily record and calculate your multiple income sources with simple math expressions.
+        </div>
+        <div class="example-box">
+          <strong>Example:</strong>
+          <div class="example-row">
+            <input class="input-label" type="text" value="Rent" readonly disabled style="background:#f0f0f0;">
+            <input class="input-amount" type="text" value="500 + (125 * 3 * 30)" readonly disabled style="background:#f0f0f0;">
+          </div>
+          <p style="font-size:13px; color:#666; font-style:italic;">You can use math expressions like: 125 * 3 * 30 = ₱11,750</p>
+        </div>
+      </div>
+
+      <!-- Slide 2 -->
+      <div class="slide" id="slide2">
+        <div class="icon-circle" style="background: rgba(46,58,89,0.1);">
+          <span>📊</span>
+        </div>
+        <div class="slide-title" style="color: #2E3A59;">Monitor Expenses</div>
+        <div class="slide-desc">
+          Keep an eye on your spending by categorizing and calculating expenses in real-time.
+        </div>
+      </div>
+
+      <!-- Slide 3 -->
+      <div class="slide" id="slide3">
+        <div class="icon-circle" style="background: rgba(255,149,0,0.1);">
+          <span>⚖️</span>
+        </div>
+        <div class="slide-title" style="color: #FF9500;">Stay on top of your Budget</div>
+        <div class="slide-desc">
+          See how much you can still spend while staying on budget, with motivational nudges.
+        </div>
+      </div>
+
+      <!-- Slide 4 -->
+      <div class="slide" id="slide4">
+        <div class="icon-circle" style="background: rgba(52,199,89,0.1);">
+          <span>🎯</span>
+        </div>
+        <div class="slide-title" style="color: #34C759;">Start Saving</div>
+        <div class="slide-desc">
+          Take control of your finances and build better money habits one peso at a time.
+        </div>
+        <div class="feature-list">
+          <div class="feature-item"><span>✅</span> No ads, no clutter</div>
+          <div class="feature-item"><span>✅</span> Data saved locally</div>
+          <div class="feature-item"><span>✅</span> Simple & intuitive</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pagination Dots -->
+    <div class="pagination" id="pagination">
+      <span class="dot active"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+    </div>
+
+    <!-- Next / Get Started Button -->
+    <button class="btn-next" id="nextBtn">Next →</button>
+  </div>
+
+  <script>
+    (function() {
+      const slides = document.querySelectorAll('.slide');
+      const dots = document.querySelectorAll('.dot');
+      const nextBtn = document.getElementById('nextBtn');
+      const skipBtn = document.getElementById('skipBtn');
+      let currentIndex = 0;
+
+      function showSlide(index) {
+        slides.forEach((s, i) => s.classList.toggle('active', i === index));
+        dots.forEach((d, i) => d.classList.toggle('active', i === index));
+        if (index === slides.length - 1) {
+          nextBtn.textContent = 'Get Started 🚀';
+        } else {
+          nextBtn.textContent = 'Next →';
+        }
+      }
+
+      function nextSlide() {
+        if (currentIndex < slides.length - 1) {
+          currentIndex++;
+          showSlide(currentIndex);
+        } else {
+          // Onboarding complete
+          localStorage.setItem('hasOnboarded', 'true');
+          window.location.href = 'home.html';
+        }
+      }
+
+      function skipOnboarding() {
+        localStorage.setItem('hasOnboarded', 'true');
+        window.location.href = 'home.html';
+      }
+
+      // Event listeners
+      nextBtn.addEventListener('click', nextSlide);
+      skipBtn.addEventListener('click', skipOnboarding);
+
+      // Initial show
+      showSlide(0);
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5">
+  <title>Tipidify · Track</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* page‑specific tweaks */
+    .button-group {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin: 20px 0;
+    }
+    .toggle-btn {
+      background: white;
+      border: 1px solid var(--dark);
+      color: var(--dark);
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .action-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header style="display: flex; align-items: center; justify-content: space-between;">
+      <h1>Magkano na lang natira?</h1>
+      <a href="more.html" style="font-size: 2rem; text-decoration: none; color: var(--teal);">☰</a>
+    </header>
+
+    <!-- Income Section -->
+    <div class="section-title">Income</div>
+    <div id="income-rows"></div>
+    <div class="action-buttons" id="income-actions">
+      <button class="btn" id="add-income">Add Row</button>
+      <button class="btn orange" id="toggle-income-remove">Remove</button>
+    </div>
+
+    <!-- Expense Section -->
+    <div class="section-title">Expenses</div>
+    <div id="expense-rows"></div>
+    <div class="action-buttons" id="expense-actions">
+      <button class="btn" id="add-expense">Add Row</button>
+      <button class="btn orange" id="toggle-expense-remove">Remove</button>
+    </div>
+
+    <!-- Clear & Toggle Buttons -->
+    <div style="display: flex; gap: 10px; justify-content: center; margin: 20px 0;">
+      <button class="btn dark" id="clear-all">Clear All</button>
+      <button class="toggle-btn" id="toggle-all-buttons">Hide Buttons</button>
+    </div>
+
+    <!-- Footer Summary -->
+    <div class="footer" id="summary">
+      <p id="total-income">Total Income: ₱0.00</p>
+      <p id="total-expense">Total Expense: ₱0.00</p>
+      <p class="balance" id="balance">Balance: ₱0.00 ✅</p>
+      <p class="quote" id="message"></p>
+    </div>
+  </div>
+
+  <script>
+    // ---------- STATE ----------
+    let incomes = [{ label: '', value: '' }];
+    let expenses = [{ label: '', value: '' }];
+    let showIncomeDelete = false;
+    let showExpenseDelete = false;
+    let showActionButtons = true;
+
+    // ---------- HELPERS ----------
+    function safeEval(expr) {
+      try {
+        return Function(`"use strict"; return (${expr})`)();
+      } catch {
+        return 0;
+      }
+    }
+
+    // ---------- RENDER ALL ----------
+    function render() {
+      renderIncomeRows();
+      renderExpenseRows();
+      updateTotals();
+      saveToLocalStorage();
+    }
+
+    // Income rows
+    function renderIncomeRows() {
+      const container = document.getElementById('income-rows');
+      container.innerHTML = incomes.map((item, i) => `
+        <div class="row">
+          <input type="text" class="input-label" placeholder="Category" 
+                 value="${escapeHtml(item.label)}" 
+                 onchange="updateIncome(${i}, 'label', this.value)">
+          <input type="text" class="input-amount" placeholder="140 + (25 * 3 * 15)" 
+                 value="${escapeHtml(item.value)}" 
+                 onchange="updateIncome(${i}, 'value', this.value)">
+          ${showIncomeDelete ? `<button class="remove-btn" onclick="removeIncomeRow(${i})">❌</button>` : ''}
+        </div>
+      `).join('');
+
+      // Toggle button text
+      const btn = document.getElementById('toggle-income-remove');
+      if (btn) btn.textContent = showIncomeDelete ? 'Done Removing' : 'Remove';
+    }
+
+    // Expense rows
+    function renderExpenseRows() {
+      const container = document.getElementById('expense-rows');
+      container.innerHTML = expenses.map((item, i) => `
+        <div class="row">
+          <input type="text" class="input-label" placeholder="Category" 
+                 value="${escapeHtml(item.label)}" 
+                 onchange="updateExpense(${i}, 'label', this.value)">
+          <input type="text" class="input-amount" placeholder="Amount" 
+                 value="${escapeHtml(item.value)}" 
+                 onchange="updateExpense(${i}, 'value', this.value)">
+          ${showExpenseDelete ? `<button class="remove-btn" onclick="removeExpenseRow(${i})">❌</button>` : ''}
+        </div>
+      `).join('');
+
+      const btn = document.getElementById('toggle-expense-remove');
+      if (btn) btn.textContent = showExpenseDelete ? 'Done Removing' : 'Remove';
+    }
+
+    // Escape HTML to prevent XSS
+    function escapeHtml(unsafe) {
+      if (!unsafe) return '';
+      return unsafe.replace(/[&<>"]/g, function(m) {
+        if (m === '&') return '&amp;';
+        if (m === '<') return '&lt;';
+        if (m === '>') return '&gt;';
+        if (m === '"') return '&quot;';
+        return m;
+      });
+    }
+
+    // Update totals & footer
+    function updateTotals() {
+      const totalIncome = incomes.reduce((sum, item) => sum + safeEval(item.value), 0);
+      const totalExpense = expenses.reduce((sum, item) => sum + safeEval(item.value), 0);
+      const balance = totalIncome - totalExpense;
+
+      document.getElementById('total-income').innerHTML = `Total Income: ₱${totalIncome.toFixed(2)}`;
+      document.getElementById('total-expense').innerHTML = `Total Expense: ₱${totalExpense.toFixed(2)}`;
+      const balanceEl = document.getElementById('balance');
+      balanceEl.innerHTML = `Balance: ₱${balance.toFixed(2)} ${balance >= 0 ? '✅' : '😱'}`;
+      balanceEl.style.color = balance < 0 ? '#E43F5A' : (balance / (totalIncome || 1) < 0.1 ? '#A9A9A9' : '#C8FA5F');
+
+      // Motivational message
+      let msg = '';
+      if (totalIncome !== 0 || totalExpense !== 0) {
+        if (balance > 2000) msg = 'Looking good boss — keep it that way 😎';
+        else if (balance > 1000) msg = 'Funds not crying yet — good job 💸';
+        else if (balance > 0) msg = 'Kaya pa 💪';
+        else if (balance < -2000) msg = 'Budget beast mode: ON 🔥';
+        else if (balance < 0) msg = 'Negative na, monitor spending closely..';
+        else msg = 'Perfectly balanced, still safe ✅';
+      }
+      document.getElementById('message').textContent = msg;
+    }
+
+    // ---------- CRUD OPERATIONS ----------
+    window.updateIncome = function(index, field, value) {
+      incomes[index][field] = value;
+      render();
+    };
+    window.updateExpense = function(index, field, value) {
+      expenses[index][field] = value;
+      render();
+    };
+
+    window.addIncomeRow = function() {
+      incomes.push({ label: '', value: '0' });
+      render();
+    };
+    window.addExpenseRow = function() {
+      expenses.push({ label: '', value: '0' });
+      render();
+    };
+
+    window.removeIncomeRow = function(index) {
+      incomes = incomes.filter((_, i) => i !== index);
+      if (incomes.length === 0) incomes = [{ label: '', value: '' }];
+      render();
+    };
+    window.removeExpenseRow = function(index) {
+      expenses = expenses.filter((_, i) => i !== index);
+      if (expenses.length === 0) expenses = [{ label: '', value: '' }];
+      render();
+    };
+
+    // ---------- EVENT LISTENERS ----------
+    document.getElementById('add-income').addEventListener('click', addIncomeRow);
+    document.getElementById('add-expense').addEventListener('click', addExpenseRow);
+
+    document.getElementById('toggle-income-remove').addEventListener('click', function() {
+      showIncomeDelete = !showIncomeDelete;
+      render();
+    });
+    document.getElementById('toggle-expense-remove').addEventListener('click', function() {
+      showExpenseDelete = !showExpenseDelete;
+      render();
+    });
+
+    document.getElementById('clear-all').addEventListener('click', function() {
+      incomes = [{ label: '', value: '' }];
+      expenses = [{ label: '', value: '' }];
+      showIncomeDelete = false;
+      showExpenseDelete = false;
+      localStorage.removeItem('incomes');
+      localStorage.removeItem('expenses');
+      render();
+    });
+
+    document.getElementById('toggle-all-buttons').addEventListener('click', function() {
+      showActionButtons = !showActionButtons;
+      const incomeActions = document.getElementById('income-actions');
+      const expenseActions = document.getElementById('expense-actions');
+      incomeActions.style.display = showActionButtons ? 'flex' : 'none';
+      expenseActions.style.display = showActionButtons ? 'flex' : 'none';
+      this.textContent = showActionButtons ? 'Hide Buttons' : 'Show';
+    });
+
+    // ---------- LOCAL STORAGE ----------
+    function saveToLocalStorage() {
+      localStorage.setItem('incomes', JSON.stringify(incomes));
+      localStorage.setItem('expenses', JSON.stringify(expenses));
+    }
+
+    function loadFromLocalStorage() {
+      const storedIncomes = localStorage.getItem('incomes');
+      const storedExpenses = localStorage.getItem('expenses');
+      if (storedIncomes) incomes = JSON.parse(storedIncomes);
+      if (storedExpenses) expenses = JSON.parse(storedExpenses);
+    }
+
+    // ---------- INIT ----------
+    loadFromLocalStorage();
+    render();
+  </script>
+</body>
+</html>
