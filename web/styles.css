@@ -1,0 +1,143 @@
+/* styles.css – Tipidify web theme */
+:root {
+  --bg: #F5F7FA;
+  --teal: #00C2CB;
+  --dark: #2E3A59;
+  --text: #2B2D42;
+  --gray: #666;
+  --light-gray: #ccc;
+  --white: #fff;
+  --green: #34C759;
+  --lime: #C8FA5F;
+  --orange: #FF9500;
+  --red: #E43F5A;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Headers */
+h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 0.5rem;
+}
+
+.section-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--dark);
+  margin: 20px 0 10px;
+  border-left: 4px solid var(--teal);
+  padding-left: 12px;
+}
+
+/* Cards & boxes */
+.card {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+/* Buttons */
+.btn {
+  background-color: var(--teal);
+  color: white;
+  font-weight: bold;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.btn:hover { opacity: 0.9; }
+.btn.orange { background-color: var(--orange); }
+.btn.red { background-color: var(--red); }
+.btn.dark { background-color: var(--dark); }
+.btn.outline {
+  background: white;
+  border: 1px solid var(--dark);
+  color: var(--dark);
+}
+
+/* Forms */
+.row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+  align-items: center;
+}
+.input-label {
+  flex: 0.7;
+  padding: 10px;
+  border: 1px solid var(--light-gray);
+  border-radius: 10px;
+  font-size: 1rem;
+  background: white;
+}
+.input-amount {
+  flex: 1.3;
+  padding: 10px;
+  border: 1px solid var(--light-gray);
+  border-radius: 10px;
+  font-size: 1rem;
+  background: white;
+}
+.remove-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--red);
+}
+
+/* Footer summary */
+.footer {
+  background: var(--dark);
+  color: white;
+  padding: 20px;
+  border-radius: 12px;
+  margin-top: auto;
+  text-align: center;
+}
+.footer p {
+  margin: 4px 0;
+}
+.footer .balance {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+.footer .quote {
+  font-style: italic;
+  color: var(--lime);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .container { padding: 12px; }
+  .row { flex-wrap: wrap; }
+  .input-label, .input-amount { flex: 1 1 100%; }
+}
