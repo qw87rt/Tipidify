@@ -1,14 +1,23 @@
 {
   "expo": {
     "scheme": "acme",
+    "name": "Tipidify",
+    "slug": "Tipidify",
+    "userInterfaceStyle": "light",
+    "version": "3.0.4",
+
     "web": {
       "bundler": "metro"
     },
-    "name": "Mobile Leave App",
-    "slug": "MobileLeaveManagement",
     "icon": "./assets/launcher/icon.png",
+    "splash": {
+      "image": "./assets/launcher/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#F5F7FA"
+    },
     "android": {
-      "package": "com.jhunray889.MobileLeaveManagement",
+      "package": "com.jhunray.tipidify",
+      "versionCode": 9,
       "adaptiveIcon": {
         "foregroundImage": "./assets/launcher/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
@@ -16,8 +25,9 @@
     },
     "extra": {
       "eas": {
-        "projectId": "e436cd75-681a-4ab1-8a60-4a845b2a8fa8"
+        "projectId": "15366f4b-92c1-4ead-bf81-66a947e38388"
       }
-    }
+    },
+    "owner": "7hunray"
   }
 }
