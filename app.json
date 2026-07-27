@@ -4,7 +4,7 @@
     "name": "Tipidify",
     "slug": "Tipidify",
     "userInterfaceStyle": "light",
-    "version": "3.0.5",
+    "version": "3.0.6",
     "web": {
       "bundler": "metro"
     },
@@ -16,7 +16,7 @@
     },
     "android": {
       "package": "com.jhunray.tipidify",
-      "versionCode": 10,
+      "versionCode": 11,
       "adaptiveIcon": {
         "foregroundImage": "./assets/launcher/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
